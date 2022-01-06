@@ -53,24 +53,24 @@ int main(int argc, char *argv[]) {
             //nacitaj zo servera
             printf("nacitaj zo servera subor %s \n", buffer);
 
-            FILE *file = fopen(buffer,"r");
-            if (file==0){
+            FILE *file = fopen(buffer, "r");
+            if (file == 0) {
                 //error
                 int convertedStatus = htonl(status);
                 n = write(newsockfd, &convertedStatus, sizeof(convertedStatus));
-            }else{
-                status=0;
+            } else {
+                status = 0;
                 int convertedStatus = htonl(status);
                 n = write(newsockfd, &convertedStatus, sizeof(convertedStatus));
 
-                fscanf(file,"%d ",&velkostX);
-                fscanf(file,"%d ",&velkostY);
+                fscanf(file, "%d ", &velkostX);
+                fscanf(file, "%d ", &velkostY);
                 int pole[velkostX * velkostY];
 
-                for (int i = 0; i < velkostX*velkostY; ++i) {
+                for (int i = 0; i < velkostX * velkostY; ++i) {
                     int farba;
-                    fscanf(file,"%d ",&farba);
-                    pole[i]=farba;
+                    fscanf(file, "%d ", &farba);
+                    pole[i] = farba;
                 }
                 fclose(file);
 
@@ -114,7 +114,8 @@ int main(int argc, char *argv[]) {
                 fprintf(filea, "%d \n", pole[i]);
             }
             fclose(filea);
-            status=0;
+            printf("Koniec ukladania\n");
+            status = 0;
         }
         int convertedStatus = htonl(status);
         n = write(newsockfd, &convertedStatus, sizeof(convertedStatus));
