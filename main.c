@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
         perror("Error binding socket address");
         return 2;
     }
+    printf("Server sa spustil a pocuva na porte %d \n", PORT);
     while (1) {
 
         listen(sockfd, 99999);
@@ -88,7 +89,6 @@ int main(int argc, char *argv[]) {
 
         } else {
             //uloz na server
-            printf("uloz na server subor %s\n", buffer);
             int predX;
             int predY;
 
@@ -107,6 +107,7 @@ int main(int argc, char *argv[]) {
                 pole[i] = ntohl(farba);
             }
             n = read(newsockfd, buffer, 255);
+            printf("uloz na server subor %s\n", buffer);
             FILE *file = fopen(buffer, "w");
             //char text[p->velkostX*p->velkostY+10];
 
