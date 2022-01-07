@@ -6,7 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#define PORT 11123
+#define PORT 11124
 
 int main(int argc, char *argv[]) {
     int sockfd, newsockfd;
@@ -48,11 +48,11 @@ int main(int argc, char *argv[]) {
         int dotaz = ntohl(dotazPred);
         char buffer[256];
         bzero(buffer, 256);
-        n = read(newsockfd, buffer, 255);
+
         if (dotaz) {
             //nacitaj zo servera
+            read(newsockfd, buffer, 255);
             printf("nacitaj zo servera subor %s \n", buffer);
-
             FILE *file = fopen(buffer, "r");
             if (file == 0) {
                 //error
@@ -97,6 +97,8 @@ int main(int argc, char *argv[]) {
 
             velkostX = ntohl(predX);
             velkostY = ntohl(predY);
+            printf("X: %d\n",velkostX);
+            printf("Y: %d\n",velkostY);
             int pole[velkostX * velkostY];
 
             for (int i = 0; i < velkostX * velkostY; ++i) {
@@ -104,6 +106,7 @@ int main(int argc, char *argv[]) {
                 n = read(newsockfd, &farba, sizeof(farba));
                 pole[i] = ntohl(farba);
             }
+            n = read(newsockfd, buffer, 255);
             FILE *file = fopen(buffer, "w");
             //char text[p->velkostX*p->velkostY+10];
 
@@ -117,8 +120,8 @@ int main(int argc, char *argv[]) {
             printf("Koniec ukladania\n");
             status = 0;
         }
-        int convertedStatus = htonl(status);
-        n = write(newsockfd, &convertedStatus, sizeof(convertedStatus));
+        //int convertedStatus = htonl(status);
+        //n = write(newsockfd, &convertedStatus, sizeof(convertedStatus));
     }
     //bzero(buffer,256);
 
