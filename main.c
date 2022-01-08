@@ -8,6 +8,8 @@
 
 #define PORT 11124
 
+static const int MAX_CONNECTIONS = 5;
+
 int main(int argc, char *argv[]) {
     int sockfd, newsockfd;
     socklen_t cli_len;
@@ -32,7 +34,7 @@ int main(int argc, char *argv[]) {
     printf("Server sa spustil a pocuva na porte %d \n", PORT);
     while (1) {
 
-        listen(sockfd, 99999);
+        listen(sockfd, MAX_CONNECTIONS);
         cli_len = sizeof(cli_addr);
 
         newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &cli_len);
@@ -85,6 +87,7 @@ int main(int argc, char *argv[]) {
                     int converted_numberPole = htonl(pole[i]);
                     write(newsockfd, &converted_numberPole, sizeof(converted_numberPole));
                 }
+                printf("Koniec nacitania\n");
             }
 
         } else {
@@ -109,7 +112,6 @@ int main(int argc, char *argv[]) {
             n = read(newsockfd, buffer, 255);
             printf("uloz na server subor %s\n", buffer);
             FILE *file = fopen(buffer, "w");
-            //char text[p->velkostX*p->velkostY+10];
 
             fprintf(file, "%d \n%d \n", velkostX, velkostY);
             fclose(file);
@@ -121,21 +123,7 @@ int main(int argc, char *argv[]) {
             printf("Koniec ukladania\n");
             status = 0;
         }
-        //int convertedStatus = htonl(status);
-        //n = write(newsockfd, &convertedStatus, sizeof(convertedStatus));
     }
-    //bzero(buffer,256);
-
-    //
-    //n = write(newsockfd, msg, strlen(msg)+1);
-    /* if (n < 0)
-     {
-         perror("Error writing to socket");
-         return 5;
-     }*/
-
     close(newsockfd);
     close(sockfd);
-
-    return 0;
 }
